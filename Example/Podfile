@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'JKUBS_Example' do
+  pod 'JKUBS', :path => '../'
+
+  target 'JKUBS_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
