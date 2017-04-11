@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Event</key>
+	<dict>
+		<key>事件1</key>
+		<dict>
+			<key>EventID</key>
+			<string>1000</string>
+			<key>EventConfig</key>
+			<dict>
+				<key>JKVC1点击</key>
+				<dict>
+					<key>target</key>
+					<string>JKVC1</string>
+					<key>selectorStr</key>
+					<string>JKClicked</string>
+				</dict>
+				<key>JKVC2点击</key>
+				<dict>
+					<key>target</key>
+					<string>JKVC2</string>
+					<key>selectorStr</key>
+					<string>JKClicked</string>
+				</dict>
+				<key>tap单击</key>
+				<dict>
+					<key>target</key>
+					<string>JKVC3</string>
+					<key>selectorStr</key>
+					<string>JKClicked</string>
+				</dict>
+				<key>选中table单元格</key>
+				<dict>
+					<key>target</key>
+					<string>JKBViewController</string>
+					<key>selectorStr</key>
+					<string>tableView:didSelectRowAtIndexPath:</string>
+				</dict>
+			</dict>
+		</dict>
+	</dict>
+	<key>PV</key>
+	<dict>
+		<key>JKAViewController</key>
+		<dict>
+			<key>PageName</key>
+			<string>Activity 1</string>
+		</dict>
+		<key>JKBViewController</key>
+		<dict>
+			<key>PageName</key>
+			<string>Activity 2</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

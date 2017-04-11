@@ -1,0 +1,19 @@
+PODS:
+  - Aspects (1.4.1)
+  - JKUBS (0.1.0):
+    - Aspects
+
+DEPENDENCIES:
+  - JKUBS (from `../`)
+
+EXTERNAL SOURCES:
+  JKUBS:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
+  JKUBS: 523a2cf27b9180090c42b88d37b60d9593567f7a
+
+PODFILE CHECKSUM: 71dd76b40a479cbdc25776cf8209d7be741aea4f
+
+COCOAPODS: 1.1.1

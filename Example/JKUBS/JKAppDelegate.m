@@ -7,12 +7,17 @@
 //
 
 #import "JKAppDelegate.h"
-
+#import "JKViewController.h"
 @implementation JKAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    JKViewController *jkVC = [JKViewController new];
+    UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:jkVC];
+    self.window.rootViewController = naVC;
+    [JKUBS configureDataWithPlistFile:@"JKUBSConfig"];
     return YES;
 }
 

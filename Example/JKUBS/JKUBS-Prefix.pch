@@ -13,4 +13,8 @@
 #ifdef __OBJC__
     @import UIKit;
     @import Foundation;
+
+#import "JKUBS.h"
+#import "JKUBS+Handler.h"
+
 #endif
