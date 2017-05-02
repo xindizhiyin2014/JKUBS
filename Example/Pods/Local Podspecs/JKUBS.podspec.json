@@ -1,8 +1,8 @@
 {
   "name": "JKUBS",
   "version": "0.1.0",
-  "summary": "A short description of JKUBS.",
-  "description": "TODO: Add long description of the pod here.",
+  "summary": "this is a User Behavior Statistics tool. it can help you know user's behavior then adjust your app.",
+  "description": "this is a User Behavior Statistics tool. it can help you know user's behavior then adjust your app",
   "homepage": "https://github.com/xindizhiyin2014/JKUBS",
   "license": {
     "type": "MIT",
@@ -15,13 +15,9 @@
     "git": "https://github.com/xindizhiyin2014/JKUBS.git",
     "tag": "0.1.0"
   },
+  "social_media_url": "http://blog.csdn.net/hanhailong18",
   "platforms": {
-    "ios": "8.0"
+    "ios": "7.0"
   },
-  "source_files": "JKUBS/Classes/**/*",
-  "dependencies": {
-    "Aspects": [
-
-    ]
-  }
+  "source_files": "JKUBS/Classes/**/*"
 }

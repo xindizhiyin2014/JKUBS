@@ -31,6 +31,15 @@
     
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    
+}
+
+
+- (void)viewDidDisappear:(BOOL)animated{
+    
+    
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 

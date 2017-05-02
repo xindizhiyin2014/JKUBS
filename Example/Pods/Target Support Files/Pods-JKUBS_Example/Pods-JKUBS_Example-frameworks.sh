@@ -84,10 +84,8 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "$BUILT_PRODUCTS_DIR/Aspects/Aspects.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JKUBS/JKUBS.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "$BUILT_PRODUCTS_DIR/Aspects/Aspects.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JKUBS/JKUBS.framework"
 fi

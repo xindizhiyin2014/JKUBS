@@ -7,16 +7,16 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_OPTIONS(NSUInteger, AspectOptions) {
-    AspectPositionAfter   = 0,            /// Called after the original implementation (default)
-    AspectPositionInstead = 1,            /// Will replace the original implementation.
-    AspectPositionBefore  = 2,            /// Called before the original implementation.
+typedef NS_OPTIONS(NSUInteger, JKUBSAspectOptions) {
+    JKUBSAspectPositionAfter   = 0,            /// Called after the original implementation (default)
+    JKUBSAspectPositionInstead = 1,            /// Will replace the original implementation.
+    JKUBSAspectPositionBefore  = 2,            /// Called before the original implementation.
     
-    AspectOptionAutomaticRemoval = 1 << 3 /// Will remove the hook after the first execution.
+    JKUBSAspectOptionAutomaticRemoval = 1 << 3 /// Will remove the hook after the first execution.
 };
 
 /// Opaque Aspect Token that allows to deregister the hook.
-@protocol AspectToken <NSObject>
+@protocol JKUBSAspectToken <NSObject>
 
 /// Deregisters an aspect.
 /// @return YES if deregistration is successful, otherwise NO.
@@ -25,7 +25,7 @@ typedef NS_OPTIONS(NSUInteger, AspectOptions) {
 @end
 
 /// The AspectInfo protocol is the first parameter of our block syntax.
-@protocol AspectInfo <NSObject>
+@protocol JKUBSAspectInfo <NSObject>
 
 /// The instance that is currently hooked.
 - (id)instance;
@@ -43,7 +43,7 @@ typedef NS_OPTIONS(NSUInteger, AspectOptions) {
 
  Adding aspects returns an opaque token which can be used to deregister again. All calls are thread safe.
  */
-@interface NSObject (Aspects)
+@interface NSObject (JKUBSAspects)
 
 /// Adds a block of code before/instead/after the current `selector` for a specific class.
 ///
@@ -54,30 +54,30 @@ typedef NS_OPTIONS(NSUInteger, AspectOptions) {
 ///
 /// @note Hooking static methods is not supported.
 /// @return A token which allows to later deregister the aspect.
-+ (id<AspectToken>)aspect_hookSelector:(SEL)selector
-                      withOptions:(AspectOptions)options
++ (id<JKUBSAspectToken>)aspect_hookSelector:(SEL)selector
+                      withOptions:(JKUBSAspectOptions)options
                        usingBlock:(id)block
                             error:(NSError **)error;
 
 /// Adds a block of code before/instead/after the current `selector` for a specific instance.
-- (id<AspectToken>)aspect_hookSelector:(SEL)selector
-                      withOptions:(AspectOptions)options
+- (id<JKUBSAspectToken>)aspect_hookSelector:(SEL)selector
+                      withOptions:(JKUBSAspectOptions)options
                        usingBlock:(id)block
                             error:(NSError **)error;
 
 @end
 
 
-typedef NS_ENUM(NSUInteger, AspectErrorCode) {
-    AspectErrorSelectorBlacklisted,                   /// Selectors like release, retain, autorelease are blacklisted.
-    AspectErrorDoesNotRespondToSelector,              /// Selector could not be found.
-    AspectErrorSelectorDeallocPosition,               /// When hooking dealloc, only AspectPositionBefore is allowed.
-    AspectErrorSelectorAlreadyHookedInClassHierarchy, /// Statically hooking the same method in subclasses is not allowed.
-    AspectErrorFailedToAllocateClassPair,             /// The runtime failed creating a class pair.
-    AspectErrorMissingBlockSignature,                 /// The block misses compile time signature info and can't be called.
-    AspectErrorIncompatibleBlockSignature,            /// The block signature does not match the method or is too large.
+typedef NS_ENUM(NSUInteger, JKUBSAspectErrorCode) {
+    JKUBSAspectErrorSelectorBlacklisted,                   /// Selectors like release, retain, autorelease are blacklisted.
+    JKUBSAspectErrorDoesNotRespondToSelector,              /// Selector could not be found.
+    JKUBSAspectErrorSelectorDeallocPosition,               /// When hooking dealloc, only AspectPositionBefore is allowed.
+    JKUBSAspectErrorSelectorAlreadyHookedInClassHierarchy, /// Statically hooking the same method in subclasses is not allowed.
+    JKUBSAspectErrorFailedToAllocateClassPair,             /// The runtime failed creating a class pair.
+    JKUBSAspectErrorMissingBlockSignature,                 /// The block misses compile time signature info and can't be called.
+    JKUBSAspectErrorIncompatibleBlockSignature,            /// The block signature does not match the method or is too large.
 
-    AspectErrorRemoveObjectAlreadyDeallocated = 100   /// (for removing) The object hooked is already deallocated.
+    JKUBSAspectErrorRemoveObjectAlreadyDeallocated = 100   /// (for removing) The object hooked is already deallocated.
 };
 
-extern NSString *const AspectErrorDomain;
+extern NSString *const JKUBSAspectErrorDomain;

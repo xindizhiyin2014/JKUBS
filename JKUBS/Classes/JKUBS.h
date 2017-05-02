@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Aspects.h"
+#import "JKUBSAspects.h"
 
 
 extern NSString const *JKUBSPVKey;
@@ -60,7 +60,7 @@ json配置文件或plist配置文件只导入一个就好了
  @param data 页面信息
  @param status 进入或离开页面的状态
  */
-+ (void)JKhandlePV:(id<AspectInfo>)data status:(JKUBSPVSTATUS)status;
++ (void)JKhandlePV:(id<JKUBSAspectInfo>)data status:(JKUBSPVSTATUS)status;
 
 
 /**
@@ -69,7 +69,7 @@ json配置文件或plist配置文件只导入一个就好了
  @param data 事件信息
  @param eventId 事件ID
  */
-+ (void)JKHandleEvent:(id<AspectInfo>)data EventID:(NSInteger)eventId;
++ (void)JKHandleEvent:(id<JKUBSAspectInfo>)data EventID:(NSInteger)eventId;
 
 
 @end

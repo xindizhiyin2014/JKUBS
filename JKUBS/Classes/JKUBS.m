@@ -66,14 +66,14 @@ static JKUBS *_ubs =nil;
 #pragma mark PVConfig - - - -
 
 + (void)configPV{
-    for (NSString *vcName in [JKUBS shareInstance].configureData[JKUBSPVKey]) {
-        
+    
+    for (NSString *vcName in [[JKUBS shareInstance].configureData[JKUBSPVKey] allKeys]) {
         Class target = NSClassFromString(vcName);
-        [target aspect_hookSelector:@selector(viewDidAppear:) withOptions:AspectPositionAfter usingBlock:^(id data){
+        [target aspect_hookSelector:@selector(viewDidAppear:) withOptions:JKUBSAspectPositionAfter usingBlock:^(id data){
             [self JKhandlePV:data status:JKUBSPV_ENTER];
         } error:nil];
         
-        [target aspect_hookSelector:@selector(viewDidDisappear:) withOptions:AspectPositionAfter usingBlock:^(id data){
+        [target aspect_hookSelector:@selector(viewDidDisappear:) withOptions:JKUBSAspectPositionAfter usingBlock:^(id data){
             [self JKhandlePV:data status:JKUBSPV_LEAVE];
         } error:nil];
     }
@@ -83,7 +83,7 @@ static JKUBS *_ubs =nil;
 
 
 
-+ (void)JKhandlePV:(id<AspectInfo>)data status:(JKUBSPVSTATUS)status{
++ (void)JKhandlePV:(id<JKUBSAspectInfo>)data status:(JKUBSPVSTATUS)status{
 
     
 }
@@ -103,7 +103,7 @@ static JKUBS *_ubs =nil;
             Class target =NSClassFromString(targetClass);
             SEL selector = NSSelectorFromString(selectorStr);
             
-                [target aspect_hookSelector:selector withOptions:AspectPositionBefore usingBlock:^(id<AspectInfo> data){
+                [target aspect_hookSelector:selector withOptions:JKUBSAspectPositionBefore usingBlock:^(id<JKUBSAspectInfo> data){
                     [self JKHandleEvent:data EventID:EventID];
                 } error:nil];
             
@@ -114,7 +114,7 @@ static JKUBS *_ubs =nil;
 
 }
 
-+ (void)JKHandleEvent:(id<AspectInfo>)data EventID:(NSInteger)eventId{
++ (void)JKHandleEvent:(id<JKUBSAspectInfo>)data EventID:(NSInteger)eventId{
 
 }
 

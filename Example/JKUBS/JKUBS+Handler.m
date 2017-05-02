@@ -10,7 +10,7 @@
 
 @implementation JKUBS (Handler)
 
-+ (void)JKhandlePV:(id<AspectInfo>)data status:(JKUBSPVSTATUS)status{
++ (void)JKhandlePV:(id<JKUBSAspectInfo>)data status:(JKUBSPVSTATUS)status{
     
     NSString *vcName = NSStringFromClass([[data instance] class]);
     NSDictionary *dic = [JKUBS shareInstance].configureData[@"PV"][vcName];
@@ -26,7 +26,7 @@
 
 
 
-+ (void)JKHandleEvent:(id<AspectInfo>)data EventID:(NSInteger)eventId{
++ (void)JKHandleEvent:(id<JKUBSAspectInfo>)data EventID:(NSInteger)eventId{
         NSLog(@"eventId:%d",(int)eventId);
 
     

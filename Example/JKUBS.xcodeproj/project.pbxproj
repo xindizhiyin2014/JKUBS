@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		045413C71E9B1FB400DBD1FA /* JKUBS+Handler.m in Sources */ = {isa = PBXBuildFile; fileRef = 045413C61E9B1FB400DBD1FA /* JKUBS+Handler.m */; };
-		045413CA1E9B211700DBD1FA /* Aspects.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045413C81E9B211700DBD1FA /* Aspects.framework */; };
 		045413CB1E9B211700DBD1FA /* JKUBS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045413C91E9B211700DBD1FA /* JKUBS.framework */; };
 		045413CE1E9B3DB300DBD1FA /* JKVC1.m in Sources */ = {isa = PBXBuildFile; fileRef = 045413CD1E9B3DB300DBD1FA /* JKVC1.m */; };
 		045413D11E9B3DC200DBD1FA /* JKVC2.m in Sources */ = {isa = PBXBuildFile; fileRef = 045413D01E9B3DC200DBD1FA /* JKVC2.m */; };
@@ -99,7 +98,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				045413CA1E9B211700DBD1FA /* Aspects.framework in Frameworks */,
 				045413CB1E9B211700DBD1FA /* JKUBS.framework in Frameworks */,
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
