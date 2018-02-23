@@ -14,22 +14,15 @@
     
     NSString *vcName = NSStringFromClass([[data instance] class]);
     NSDictionary *dic = [JKUBS shareInstance].configureData[@"PV"][vcName];
-        if (status ==JKUBSPV_ENTER) {
-            
+    if (status ==JKUBSPV_ENTER) {
             NSLog(@"enter data:%@",dic);
-
     }else{
            NSLog(@"leave data:%@",dic);
     }
 }
 
-
-
-
-+ (void)JKHandleEvent:(id<JKUBSAspectInfo>)data EventID:(NSInteger)eventId{
-        NSLog(@"eventId:%d",(int)eventId);
-
-    
++ (void)JKHandleEvent:(id<JKUBSAspectInfo>)data EventID:(NSString *)eventId{
+        NSLog(@"eventId:%@",eventId);
 }
 
 
