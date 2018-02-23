@@ -18,13 +18,13 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-this is a User Behavior Statistics tool. it can help you know user\'s behavior then adjust your app
+this is a User Behavior Statistics tool. it can help you know user\'s behavior then adjust your app. ...
                        DESC
 
   s.homepage         = 'https://github.com/xindizhiyin2014/JKUBS'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'HHL110120' => '929097264@qq.com' }
+  s.author           = { 'xindizhiyin2014' => '929097264@qq.com' }
   s.source           = { :git => 'https://github.com/xindizhiyin2014/JKUBS.git', :tag => s.version.to_s }
   s.social_media_url = 'http://blog.csdn.net/hanhailong18'
 

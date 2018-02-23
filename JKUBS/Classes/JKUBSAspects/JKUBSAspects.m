@@ -14,6 +14,10 @@
 //#define AspectLog(...) do { NSLog(__VA_ARGS__); }while(0)
 #define JKUBSAspectLogError(...) do { NSLog(__VA_ARGS__); }while(0)
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored"-Wvisibility"
+#pragma clang diagnostic ignored"-Wblock-capture-autoreleasing"
+
 // Block internals.
 typedef NS_OPTIONS(int, JKUBSAspectBlockFlags) {
 	JKUBSAspectBlockFlagsHasCopyDisposeHelpers = (1 << 25),
@@ -868,3 +872,6 @@ static void aspect_deregisterTrackedSelector(id self, SEL selector) {
 }
 
 @end
+
+#pragma clang diagnostic pop
+
