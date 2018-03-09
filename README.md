@@ -24,6 +24,9 @@ pod "JKUBS"
 
 HHL110120, 929097264@qq.com
 
+## QQ contact group
+![](https://github.com/xindizhiyin2014/JKUBS/blob/master/zrCode.png?raw=true)
+
 ## License
 
 JKUBS is available under the MIT license. See the LICENSE file for more info.
