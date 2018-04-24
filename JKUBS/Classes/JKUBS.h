@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JKUBSAspects.h"
+#import <JKUBSAspects/JKUBSAspects.h>
 
 extern NSString const *JKUBSPVKey;
 extern NSString const *JKUBSEventKey;
