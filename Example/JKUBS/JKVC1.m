@@ -26,6 +26,7 @@
     [button1 setTitle:@"click事件" forState:UIControlStateNormal];
     [button1 addTarget:self action:@selector(JKClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button1];
+    [JKVC1 testFun];
     
 }
 
@@ -34,6 +35,12 @@
     NSLog(@"JKClicked");
     
 }
+
++ (void)testFun{
+    NSLog(@"testFun");
+}
+
+
 
 
 - (void)didReceiveMemoryWarning {

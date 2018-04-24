@@ -10,6 +10,13 @@
 			<string>1000</string>
 			<key>EventConfig</key>
 			<dict>
+				<key>类方法埋点</key>
+				<dict>
+					<key>target</key>
+					<string>JKVC1</string>
+					<key>selectorStr</key>
+					<string>testFun</string>
+				</dict>
 				<key>JKVC1点击</key>
 				<dict>
 					<key>target</key>

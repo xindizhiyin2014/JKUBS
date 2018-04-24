@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface JKVC1 : UIViewController
-
++ (void)JKClicked;
 @end

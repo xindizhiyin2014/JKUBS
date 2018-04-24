@@ -10,8 +10,8 @@
 #endif
 #endif
 
-#import "JKUBS.h"
+#import "JKUBSAspects.h"
 
-FOUNDATION_EXPORT double JKUBSVersionNumber;
-FOUNDATION_EXPORT const unsigned char JKUBSVersionString[];
+FOUNDATION_EXPORT double JKUBSAspectsVersionNumber;
+FOUNDATION_EXPORT const unsigned char JKUBSAspectsVersionString[];
 

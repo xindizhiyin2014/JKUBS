@@ -1,0 +1,6 @@
+framework module JKUBSAspects {
+  umbrella header "JKUBSAspects-umbrella.h"
+
+  export *
+  module * { export * }
+}
