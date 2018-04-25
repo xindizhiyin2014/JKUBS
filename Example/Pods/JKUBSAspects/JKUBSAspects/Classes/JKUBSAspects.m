@@ -50,7 +50,7 @@ typedef struct _AspectBlock {
 
 // Tracks a single aspect.
 @interface JKUBSAspectIdentifier : NSObject
-+ (instancetype)identifierWithSelector:(SEL)selector object:(id)object options:(JKUBSAspectOptions)options block:(id)block error:(NSError **)error;
++ (instancetype)identifierWithSelector:(SEL)selector isHookClassMethod:(BOOL)isHookClassMethod object:(id)object options:(JKUBSAspectOptions)options block:(id)block error:(NSError **)error;
 - (BOOL)invokeWithInfo:(id<JKUBSAspectInfo>)info;
 @property (nonatomic, assign) SEL selector;
 @property (nonatomic, strong) id block;
@@ -70,10 +70,9 @@ typedef struct _AspectBlock {
 @end
 
 @interface JKUBSAspectTracker : NSObject
-- (id)initWithTrackedClass:(Class)trackedClass parent:(JKUBSAspectTracker *)parent;
+- (id)initWithTrackedClass:(Class)trackedClass;
 @property (nonatomic, strong) Class trackedClass;
 @property (nonatomic, strong) NSMutableSet *selectorNames;
-@property (nonatomic, weak) JKUBSAspectTracker *parentEntry;
 @end
 
 @interface NSInvocation (Aspects)
@@ -99,7 +98,7 @@ static NSString *const JKUBSAspectsMessagePrefix = @"JKUBSaspects_";
                       withOptions:(JKUBSAspectOptions)options
                        usingBlock:(id)block
                             error:(NSError **)error {
-    return aspect_add((id)self, selector, options, block, error);
+    return aspect_add((id)self, selector, NO, options, block, error);
 }
 
 /// @return A token which allows to later deregister the aspect.
@@ -107,27 +106,34 @@ static NSString *const JKUBSAspectsMessagePrefix = @"JKUBSaspects_";
                       withOptions:(JKUBSAspectOptions)options
                        usingBlock:(id)block
                             error:(NSError **)error {
-    return aspect_add(self, selector, options, block, error);
+    return aspect_add(self, selector, NO, options, block, error);
+}
+
++ (id<JKUBSAspectToken>)aspect_hookClassSelector:(SEL)selector withOptions:(JKUBSAspectOptions)options usingBlock:(id)block error:(NSError *__autoreleasing *)error{
+    return aspect_add((id)self, selector, YES, options, block, error);
+}
+
+- (id<JKUBSAspectToken>)aspect_hookClassSelector:(SEL)selector withOptions:(JKUBSAspectOptions)options usingBlock:(id)block error:(NSError *__autoreleasing *)error{
+    return aspect_add(self, selector, YES, options, block, error);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Private Helper
 
-static id aspect_add(id self, SEL selector, JKUBSAspectOptions options, id block, NSError **error) {
+static id aspect_add(id self, SEL selector, BOOL isHookClassMethod,JKUBSAspectOptions options, id block, NSError **error) {
     NSCParameterAssert(self);
     NSCParameterAssert(selector);
     NSCParameterAssert(block);
-
     __block JKUBSAspectIdentifier *identifier = nil;
     aspect_performLocked(^{
-        if (aspect_isSelectorAllowedAndTrack(self, selector, options, error)) {
+        if (aspect_isSelectorAllowedAndTrack(self, isHookClassMethod, selector, options, error)) {
             JKUBSAspectsContainer *aspectContainer = aspect_getContainerForObject(self, selector);
-            identifier = [JKUBSAspectIdentifier identifierWithSelector:selector object:self options:options block:block error:error];
+            identifier = [JKUBSAspectIdentifier identifierWithSelector:selector isHookClassMethod:isHookClassMethod object:self options:options block:block error:error];
             if (identifier) {
                 [aspectContainer addAspect:identifier withOptions:options];
-
+                
                 // Modify the class to allow message interception.
-                aspect_prepareClassAndHookSelector(self, selector, error);
+                aspect_prepareClassAndHookSelector(self, selector, isHookClassMethod, error);
             }
         }
     });
@@ -190,7 +196,7 @@ static NSMethodSignature *aspect_blockMethodSignature(id block, NSError **error)
 	return [NSMethodSignature signatureWithObjCTypes:signature];
 }
 
-static BOOL aspect_isCompatibleBlockSignature(NSMethodSignature *blockSignature, id object, SEL selector, NSError **error) {
+static BOOL aspect_isCompatibleBlockSignature(NSMethodSignature *blockSignature, id object,BOOL isHookClassMethod, SEL selector, NSError **error) {
     NSCParameterAssert(blockSignature);
     NSCParameterAssert(object);
     NSCParameterAssert(selector);
@@ -221,45 +227,18 @@ static BOOL aspect_isCompatibleBlockSignature(NSMethodSignature *blockSignature,
     }
 
     if (!signaturesMatch) {
-        if ([NSObject validateMehodCanRunWithTarget:object selectorStr:NSStringFromSelector(selector)]) {//类方法的判断
-            return YES;
+    
+        if (![object respondsToSelector:selector]) {
+            NSString *description = [NSString stringWithFormat:@"Blog signature %@ doesn't match %@.", blockSignature, methodSignature];
+            JKUBSAspectError(JKUBSAspectErrorIncompatibleBlockSignature, description);
+            return NO;
+        }else{
+            return isHookClassMethod;
         }
-        NSString *description = [NSString stringWithFormat:@"Blog signature %@ doesn't match %@.", blockSignature, methodSignature];
-        JKUBSAspectError(JKUBSAspectErrorIncompatibleBlockSignature, description);
-        return NO;
     }
     return YES;
 }
 
-//判断方法能否响应
-+ (BOOL)validateMehodCanRunWithTarget:(id)target selectorStr:(NSString *)selectorStr{
-    unsigned int methodCount =0;
-    Method* methodList = class_copyMethodList([target class],&methodCount);
-    NSMutableArray *methodsArray = [NSMutableArray arrayWithCapacity:methodCount];
-    
-    for(int i=0;i<methodCount;i++)
-    {
-        Method temp = methodList[i];
-        const char* name_s =sel_getName(method_getName(temp));
-        int arguments = method_getNumberOfArguments(temp);
-        const char* encoding =method_getTypeEncoding(temp);
-        NSLog(@"方法名：%@,参数个数：%d,编码方式：%@",[NSString stringWithUTF8String:name_s],
-              arguments,
-              [NSString stringWithUTF8String:encoding]);
-        [methodsArray addObject:[NSString stringWithUTF8String:name_s]];
-    }
-    free(methodList);
-    for (NSString *methodStr   in [methodsArray copy]) {
-        if ([methodStr isEqualToString:selectorStr]) {
-            
-            return YES;
-            break;
-        }
-    }
-    
-    return NO;
-    
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Class + Selector Preparation
@@ -272,14 +251,19 @@ static BOOL aspect_isMsgForwardIMP(IMP impl) {
     ;
 }
 
-static IMP aspect_getMsgForwardIMP(NSObject *self, SEL selector) {
+static IMP aspect_getMsgForwardIMP(NSObject *self, BOOL isHookClassMethod,  SEL selector) {
     IMP msgForwardIMP = _objc_msgForward;
 #if !defined(__arm64__)
     // As an ugly internal runtime implementation detail in the 32bit runtime, we need to determine of the method we hook returns a struct or anything larger than id.
     // https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/LowLevelABI/000-Introduction/introduction.html
     // https://github.com/ReactiveCocoa/ReactiveCocoa/issues/783
     // http://infocenter.arm.com/help/topic/com.arm.doc.ihi0042e/IHI0042E_aapcs.pdf (Section 5.4)
-    Method method = class_getInstanceMethod(self.class, selector);
+    Method method;
+    if (isHookClassMethod) {
+        method = class_getClassMethod(self.class, selector);
+    }else{
+        method = class_getInstanceMethod(self.class, selector);
+    }
     const char *encoding = method_getTypeEncoding(method);
     BOOL methodReturnsStructValue = encoding[0] == _C_STRUCT_B;
     if (methodReturnsStructValue) {
@@ -299,9 +283,9 @@ static IMP aspect_getMsgForwardIMP(NSObject *self, SEL selector) {
     return msgForwardIMP;
 }
 
-static void aspect_prepareClassAndHookSelector(NSObject *self, SEL selector, NSError **error) {
+static void aspect_prepareClassAndHookSelector(NSObject *self, SEL selector, BOOL isHookClassMethod, NSError **error) {
     NSCParameterAssert(selector);
-    Class klass = aspect_hookClass(self, error);
+    Class klass = aspect_hookClass(self, isHookClassMethod, error);
     Method targetMethod = class_getInstanceMethod(klass, selector);
     IMP targetMethodIMP = method_getImplementation(targetMethod);
     if (!aspect_isMsgForwardIMP(targetMethodIMP)) {
@@ -314,7 +298,7 @@ static void aspect_prepareClassAndHookSelector(NSObject *self, SEL selector, NSE
         }
 
         // We use forwardInvocation to hook in.
-        class_replaceMethod(klass, selector, aspect_getMsgForwardIMP(self, selector), typeEncoding);
+        class_replaceMethod(klass, selector, aspect_getMsgForwardIMP(self, isHookClassMethod, selector), typeEncoding);
         JKUBSAspectLog(@"Aspects: Installed hook for -[%@ %@].", klass, NSStringFromSelector(selector));
     }
 }
@@ -377,7 +361,7 @@ static void aspect_cleanupHookedClassAndSelector(NSObject *self, SEL selector) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Hook Class
 
-static Class aspect_hookClass(NSObject *self, NSError **error) {
+static Class aspect_hookClass(NSObject *self, BOOL isHookClassMethod, NSError **error) {
     NSCParameterAssert(self);
 	Class statedClass = self.class;
 	Class baseClass = object_getClass(self);
@@ -389,7 +373,11 @@ static Class aspect_hookClass(NSObject *self, NSError **error) {
 
         // We swizzle a class object, not a single object.
 	}else if (class_isMetaClass(baseClass)) {
+        if (isHookClassMethod) {
+            return aspect_swizzleClassInPlace(baseClass);
+        }
         return aspect_swizzleClassInPlace((Class)self);
+        
         // Probably a KVO'ed class. Swizzle in place. Also swizzle meta classes in place.
     }else if (statedClass != baseClass) {
         return aspect_swizzleClassInPlace(baseClass);
@@ -595,7 +583,7 @@ static NSMutableDictionary *aspect_getSwizzledClassesDict() {
     return swizzledClassesDict;
 }
 
-static BOOL aspect_isSelectorAllowedAndTrack(NSObject *self, SEL selector, JKUBSAspectOptions options, NSError **error) {
+static BOOL aspect_isSelectorAllowedAndTrack(NSObject *self, BOOL isHookClassMethod, SEL selector, JKUBSAspectOptions options, NSError **error) {
     static NSSet *disallowedSelectorList;
     static dispatch_once_t pred;
     dispatch_once(&pred, ^{
@@ -628,22 +616,27 @@ static BOOL aspect_isSelectorAllowedAndTrack(NSObject *self, SEL selector, JKUBS
     if (class_isMetaClass(object_getClass(self))) {
         Class klass = [self class];
         NSMutableDictionary *swizzledClassesDict = aspect_getSwizzledClassesDict();
-        Class currentClass = [self class];
-
-        currentClass = klass;
-        JKUBSAspectTracker *parentTracker = nil;
+        Class currentClass = klass;
         do {
-            JKUBSAspectTracker *tracker = swizzledClassesDict[currentClass];
+            JKUBSAspectTracker *tracker = swizzledClassesDict[klass];
             if (!tracker) {
-                tracker = [[JKUBSAspectTracker alloc] initWithTrackedClass:currentClass parent:parentTracker];
-                swizzledClassesDict[(id<NSCopying>)currentClass] = tracker;
+             tracker = [[JKUBSAspectTracker alloc] initWithTrackedClass:klass];
+             swizzledClassesDict[(id<NSCopying>)klass] = tracker;
             }
-            [tracker.selectorNames addObject:selectorName];
-            // All superclasses get marked as having a subclass that is modified.
-            parentTracker = tracker;
+            Method method;
+            if (isHookClassMethod) {
+                method = class_getClassMethod(self.class, selector);
+            }else{
+                method = class_getInstanceMethod(self.class, selector);
+            }
+            if(method){
+             [tracker.selectorNames addObject:selectorName];
+            }
+            
         }while ((currentClass = class_getSuperclass(currentClass)));
+        
     }
-
+    
     return YES;
 }
 
@@ -668,16 +661,15 @@ static void aspect_deregisterTrackedSelector(id self, SEL selector) {
 
 @implementation JKUBSAspectTracker
 
-- (id)initWithTrackedClass:(Class)trackedClass parent:(JKUBSAspectTracker *)parent {
+- (id)initWithTrackedClass:(Class)trackedClass {
     if (self = [super init]) {
         _trackedClass = trackedClass;
-        _parentEntry = parent;
         _selectorNames = [NSMutableSet new];
     }
     return self;
 }
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@: %@, trackedClass: %@, selectorNames:%@, parent:%p>", self.class, self, NSStringFromClass(self.trackedClass), self.selectorNames, self.parentEntry];
+    return [NSString stringWithFormat:@"<%@: %@, trackedClass: %@, selectorNames:%@", self.class, self, NSStringFromClass(self.trackedClass), self.selectorNames];
 }
 
 @end
@@ -768,15 +760,14 @@ static void aspect_deregisterTrackedSelector(id self, SEL selector) {
 #pragma mark - JKUBSAspectIdentifier
 
 @implementation JKUBSAspectIdentifier
-
-+ (instancetype)identifierWithSelector:(SEL)selector object:(id)object options:(JKUBSAspectOptions)options block:(id)block error:(NSError **)error {
++ (instancetype)identifierWithSelector:(SEL)selector isHookClassMethod:(BOOL)isHookClassMethod object:(id)object options:(JKUBSAspectOptions)options block:(id)block error:(NSError **)error {
     NSCParameterAssert(block);
     NSCParameterAssert(selector);
     NSMethodSignature *blockSignature = aspect_blockMethodSignature(block, error); // TODO: check signature compatibility, etc.
-    if (!aspect_isCompatibleBlockSignature(blockSignature, object, selector, error)) {
+    if (!aspect_isCompatibleBlockSignature(blockSignature, object, isHookClassMethod, selector, error)) {
         return nil;
     }
-
+    
     JKUBSAspectIdentifier *identifier = nil;
     if (blockSignature) {
         identifier = [JKUBSAspectIdentifier new];
@@ -784,7 +775,12 @@ static void aspect_deregisterTrackedSelector(id self, SEL selector) {
         identifier.block = block;
         identifier.blockSignature = blockSignature;
         identifier.options = options;
-        identifier.object = object; // weak
+        if (isHookClassMethod) {
+            identifier.object = [object class]; // weak
+        }else{
+           identifier.object = object; // weak
+        }
+        
     }
     return identifier;
 }

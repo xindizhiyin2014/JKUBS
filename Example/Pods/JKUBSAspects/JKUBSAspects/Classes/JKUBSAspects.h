@@ -64,6 +64,12 @@ typedef NS_OPTIONS(NSUInteger, JKUBSAspectOptions) {
                       withOptions:(JKUBSAspectOptions)options
                        usingBlock:(id)block
                             error:(NSError **)error;
+//拦截类方法
++ (id<JKUBSAspectToken>)aspect_hookClassSelector:(SEL)selector withOptions:(JKUBSAspectOptions)options usingBlock:(id)block error:(NSError *__autoreleasing *)error;
+//拦截类方法
+- (id<JKUBSAspectToken>)aspect_hookClassSelector:(SEL)selector withOptions:(JKUBSAspectOptions)options usingBlock:(id)block error:(NSError *__autoreleasing *)error;
+
+
 
 @end
 

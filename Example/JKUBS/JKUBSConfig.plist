@@ -17,13 +17,6 @@
 					<key>selectorStr</key>
 					<string>testFun</string>
 				</dict>
-				<key>JKVC1点击</key>
-				<dict>
-					<key>target</key>
-					<string>JKVC1</string>
-					<key>selectorStr</key>
-					<string>JKClicked</string>
-				</dict>
 				<key>JKVC2点击</key>
 				<dict>
 					<key>target</key>

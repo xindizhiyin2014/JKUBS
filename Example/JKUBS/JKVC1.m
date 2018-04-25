@@ -23,16 +23,16 @@
     button1.frame = CGRectMake(0, 0, 200, 30);
     button1.center = CGPointMake(self.view.center.x, self.view.center.y+50) ;
     
-    [button1 setTitle:@"click事件" forState:UIControlStateNormal];
+    [button1 setTitle:@"类方法事件" forState:UIControlStateNormal];
     [button1 addTarget:self action:@selector(JKClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button1];
-    [JKVC1 testFun];
-    
 }
 
 - (void)JKClicked{
     
-    NSLog(@"JKClicked");
+    NSLog(@"JKClicked1");
+    [JKVC1 testFun];
+
     
 }
 
