@@ -81,23 +81,19 @@ static JKUBS *_ubs =nil;
             NSString *selectorStr = eventConfig[JKUBSSelectorStrKey];
             NSString *targetClass = eventConfig[JKUBSTargetKey];
             Class target =NSClassFromString(targetClass);
-            SEL selector = NSSelectorFromString(selectorStr);
-             id<JKUBSAspectToken> token = [target aspect_hookSelector:selector withOptions:JKUBSAspectPositionBefore usingBlock:^(id<JKUBSAspectInfo> data){
+            if ([selectorStr hasPrefix:@"+"]) {
+                selectorStr = [selectorStr substringFromIndex:1];
+                SEL selector = NSSelectorFromString(selectorStr);
+                [target  aspect_hookClassSelector:selector withOptions:JKUBSAspectPositionBefore usingBlock:^(id<JKUBSAspectInfo> data){
                     [self JKHandleEvent:data EventID:EventID];
                 } error:nil];
-            if (!token && [target respondsToSelector:selector]) {
-              token= [target  aspect_hookClassSelector:selector withOptions:JKUBSAspectPositionBefore usingBlock:^(id<JKUBSAspectInfo> data){
+            }else{
+             SEL selector = NSSelectorFromString(selectorStr);
+                [target aspect_hookSelector:selector withOptions:JKUBSAspectPositionBefore usingBlock:^(id<JKUBSAspectInfo> data){
                     [self JKHandleEvent:data EventID:EventID];
                 } error:nil];
             }
-            
-//            if ([targetClass isEqualToString:@"JKVC1"]) {
-//                [target  aspect_hookClassSelector:selector withOptions:JKUBSAspectPositionBefore usingBlock:^(id<JKUBSAspectInfo> data){
-//                    [self JKHandleEvent:data EventID:EventID];
-//                } error:nil];
-//            }
-            
-            
+    
         }
     }
 }

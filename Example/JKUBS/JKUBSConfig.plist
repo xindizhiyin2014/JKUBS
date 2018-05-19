@@ -15,7 +15,7 @@
 					<key>target</key>
 					<string>JKVC1</string>
 					<key>selectorStr</key>
-					<string>testFun</string>
+					<string>+testFun</string>
 				</dict>
 				<key>JKVC2点击</key>
 				<dict>
