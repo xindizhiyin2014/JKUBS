@@ -9,7 +9,7 @@
 #import "JKUBS.h"
 
 NSString const *JKUBSPVKey = @"PV";
-NSString const *JKUBSEventKey = @"Event";
+NSString const *JKUBSEventKey = @"Events";
 NSString const *JKUBSEventIDKey = @"EventID";
 NSString const *JKUBSEventConfigKey = @"EventConfig";
 NSString const *JKUBSSelectorStrKey = @"selectorStr";
@@ -72,11 +72,10 @@ static JKUBS *_ubs =nil;
 #pragma mark - - - - EventConfig - - - -
 
 + (void)configEvents{
-    NSDictionary *eventsDic = [JKUBS shareInstance].configureData[JKUBSEventKey];
-    NSArray *events =[eventsDic allValues];
+    NSArray *events =[JKUBS shareInstance].configureData[JKUBSEventKey];
     for (NSDictionary *dic in events) {
         NSString * EventID = dic[JKUBSEventIDKey];
-        NSArray *eventConfigs = [dic[JKUBSEventConfigKey] allValues];
+        NSArray *eventConfigs = dic[JKUBSEventConfigKey];
         for (NSDictionary *eventConfig in eventConfigs) {
             NSString *selectorStr = eventConfig[JKUBSSelectorStrKey];
             NSString *targetClass = eventConfig[JKUBSTargetKey];
@@ -84,12 +83,12 @@ static JKUBS *_ubs =nil;
             if ([selectorStr hasPrefix:@"+"]) {
                 selectorStr = [selectorStr substringFromIndex:1];
                 SEL selector = NSSelectorFromString(selectorStr);
-                [target  aspect_hookClassSelector:selector withOptions:JKUBSAspectPositionBefore usingBlock:^(id<JKUBSAspectInfo> data){
+                [target  aspect_hookClassSelector:selector withOptions:JKUBSAspectPositionAfter usingBlock:^(id<JKUBSAspectInfo> data){
                     [self JKHandleEvent:data EventID:EventID];
                 } error:nil];
             }else{
              SEL selector = NSSelectorFromString(selectorStr);
-                [target aspect_hookSelector:selector withOptions:JKUBSAspectPositionBefore usingBlock:^(id<JKUBSAspectInfo> data){
+                [target aspect_hookSelector:selector withOptions:JKUBSAspectPositionAfter usingBlock:^(id<JKUBSAspectInfo> data){
                     [self JKHandleEvent:data EventID:EventID];
                 } error:nil];
             }

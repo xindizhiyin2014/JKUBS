@@ -2,45 +2,42 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Event</key>
-	<dict>
-		<key>事件1</key>
+	<key>Events</key>
+	<array>
 		<dict>
 			<key>EventID</key>
 			<string>1000</string>
+			<key>EventName</key>
+			<string></string>
 			<key>EventConfig</key>
-			<dict>
-				<key>类方法埋点</key>
+			<array>
 				<dict>
 					<key>target</key>
 					<string>JKVC1</string>
 					<key>selectorStr</key>
 					<string>+testFun</string>
 				</dict>
-				<key>JKVC2点击</key>
 				<dict>
 					<key>target</key>
 					<string>JKVC2</string>
 					<key>selectorStr</key>
 					<string>JKClicked</string>
 				</dict>
-				<key>tap单击</key>
 				<dict>
 					<key>target</key>
 					<string>JKVC3</string>
 					<key>selectorStr</key>
 					<string>JKClicked</string>
 				</dict>
-				<key>选中table单元格</key>
 				<dict>
 					<key>target</key>
 					<string>JKBViewController</string>
 					<key>selectorStr</key>
 					<string>tableView:didSelectRowAtIndexPath:</string>
 				</dict>
-			</dict>
+			</array>
 		</dict>
-	</dict>
+	</array>
 	<key>PV</key>
 	<dict>
 		<key>JKAViewController</key>

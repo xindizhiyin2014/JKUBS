@@ -30,7 +30,6 @@
 
 - (void)JKClicked{
     
-    NSLog(@"JKClicked1");
     [JKVC1 testFun];
 
     
