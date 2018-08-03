@@ -10,44 +10,63 @@
 			<key>EventName</key>
 			<string></string>
 			<key>EventConfig</key>
-			<array>
-				<dict>
-					<key>target</key>
-					<string>JKVC1</string>
-					<key>selectorStr</key>
-					<string>+testFun</string>
-				</dict>
-				<dict>
-					<key>target</key>
-					<string>JKVC2</string>
-					<key>selectorStr</key>
-					<string>JKClicked</string>
-				</dict>
-				<dict>
-					<key>target</key>
-					<string>JKVC3</string>
-					<key>selectorStr</key>
-					<string>JKClicked</string>
-				</dict>
-				<dict>
-					<key>target</key>
-					<string>JKBViewController</string>
-					<key>selectorStr</key>
-					<string>tableView:didSelectRowAtIndexPath:</string>
-				</dict>
-			</array>
+			<dict>
+				<key>target</key>
+				<string>JKVC1</string>
+				<key>selectorStr</key>
+				<string>+testFun</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>EventID</key>
+			<string>1001</string>
+			<key>EventName</key>
+			<string></string>
+			<key>EventConfig</key>
+			<dict>
+				<key>target</key>
+				<string>JKVC2</string>
+				<key>selectorStr</key>
+				<string>JKClicked</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>EventID</key>
+			<string>1003</string>
+			<key>EventName</key>
+			<string></string>
+			<key>EventConfig</key>
+			<dict>
+				<key>target</key>
+				<string>JKVC3</string>
+				<key>selectorStr</key>
+				<string>JKClicked</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>EventID</key>
+			<string>1004</string>
+			<key>EventName</key>
+			<string></string>
+			<key>EventConfig</key>
+			<dict>
+				<key>target</key>
+				<string>JKBViewController</string>
+				<key>selectorStr</key>
+				<string>tableView:didSelectRowAtIndexPath:</string>
+			</dict>
 		</dict>
 	</array>
 	<key>PV</key>
 	<dict>
 		<key>JKAViewController</key>
 		<dict>
-			<key>PageName</key>
+			<key>pageName</key>
 			<string>Activity 1</string>
 		</dict>
 		<key>JKBViewController</key>
 		<dict>
-			<key>PageName</key>
+			<key>pageName</key>
 			<string>Activity 2</string>
 		</dict>
 	</dict>

@@ -73,10 +73,9 @@ static JKUBS *_ubs =nil;
 
 + (void)configEvents{
     NSArray *events =[JKUBS shareInstance].configureData[JKUBSEventKey];
-    for (NSDictionary *dic in events) {
-        NSString * EventID = dic[JKUBSEventIDKey];
-        NSArray *eventConfigs = dic[JKUBSEventConfigKey];
-        for (NSDictionary *eventConfig in eventConfigs) {
+    for (NSDictionary *event in events) {
+        NSString * EventID = event[JKUBSEventIDKey];
+        NSDictionary *eventConfig = event[JKUBSEventConfigKey];
             NSString *selectorStr = eventConfig[JKUBSSelectorStrKey];
             NSString *targetClass = eventConfig[JKUBSTargetKey];
             Class target =NSClassFromString(targetClass);
@@ -92,8 +91,6 @@ static JKUBS *_ubs =nil;
                     [self JKHandleEvent:data EventID:EventID];
                 } error:nil];
             }
-    
-        }
     }
 }
 
