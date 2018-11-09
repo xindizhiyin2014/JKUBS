@@ -15,9 +15,9 @@
     NSString *vcName = NSStringFromClass([[data instance] class]);
     NSDictionary *dic = [JKUBS shareInstance].configureData[@"PV"][vcName];
     if (status ==JKUBSPV_ENTER) {
-           // NSLog(@"enter data:%@",dic);
+            NSLog(@"enter data:%@",dic);
     }else{
-          // NSLog(@"leave data:%@",dic);
+           NSLog(@"leave data:%@",dic);
     }
 }
 
