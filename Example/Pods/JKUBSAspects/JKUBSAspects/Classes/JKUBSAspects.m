@@ -456,10 +456,10 @@ static Class aspect_swizzleClassInPlace(Class klass) {
     NSString *className = NSStringFromClass(klass);
 
     _aspect_modifySwizzledClasses(^(NSMutableSet *swizzledClasses) {
-        if (![swizzledClasses containsObject:className]) {
+        //if (![swizzledClasses containsObject:className]) {
             aspect_swizzleForwardInvocation(klass);
             [swizzledClasses addObject:className];
-        }
+        //}
     });
     return klass;
 }

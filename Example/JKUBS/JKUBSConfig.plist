@@ -19,6 +19,19 @@
 		</dict>
 		<dict>
 			<key>EventID</key>
+			<string>1100</string>
+			<key>EventName</key>
+			<string></string>
+			<key>EventConfig</key>
+			<dict>
+				<key>target</key>
+				<string>JKVC1</string>
+				<key>selectorStr</key>
+				<string>testAAA</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>EventID</key>
 			<string>1001</string>
 			<key>EventName</key>
 			<string></string>

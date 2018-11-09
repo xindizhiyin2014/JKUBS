@@ -1,13 +1,13 @@
 PODS:
   - JKUBS (0.1.4.3):
     - JKUBSAspects
-  - JKUBSAspects (0.1.4)
+  - JKUBSAspects (0.1.5)
 
 DEPENDENCIES:
   - JKUBS (from `../`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - JKUBSAspects
 
 EXTERNAL SOURCES:
@@ -16,8 +16,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   JKUBS: 4df02746e42261a71da8c969d82c9d6472608357
-  JKUBSAspects: 59a5421abd2f7e785d26f46c80ead55617d67782
+  JKUBSAspects: ee4f5d13b6f0afde676f15c7298e810aa35d7efa
 
 PODFILE CHECKSUM: 71dd76b40a479cbdc25776cf8209d7be741aea4f
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3

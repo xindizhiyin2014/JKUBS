@@ -31,12 +31,17 @@
 - (void)JKClicked{
     
     [JKVC1 testFun];
+    [self testAAA];
 
     
 }
 
 + (void)testFun{
     NSLog(@"testFun");
+}
+
+- (void)testAAA{
+    NSLog(@"testAAA");
 }
 
 

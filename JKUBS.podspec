@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JKUBS'
-  s.version          = '0.1.4.3'
+  s.version          = '0.1.4.4'
   s.summary          = 'this is a User Behavior Statistics tool. it can help you know user\'s behavior then adjust your app.'
 
 # This description is used to generate tags and improve search results.
